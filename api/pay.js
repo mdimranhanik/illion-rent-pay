@@ -13,9 +13,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2024-06-20",
 });
 
-const CURRENCY    = (process.env.CURRENCY    || "usd").toLowerCase();
-const SUCCESS_URL = process.env.SUCCESS_URL  || "https://example.com/thank-you";
-const CANCEL_URL  = process.env.CANCEL_URL   || "https://example.com";
+const CURRENCY    = "usd";
+const SUCCESS_URL = process.env.SUCCESS_URL  || "https://stripe.com";
+const CANCEL_URL  = process.env.CANCEL_URL   || "https://stripe.com";
 
 // ---------------------------------------------------------------------------
 // Handler
@@ -45,7 +45,7 @@ module.exports = async function handler(req, res) {
       ],
 
       // Custom fields so the owner knows WHO paid on the shared link.
-      // Values appear on the payment record in the Stripe dashboard.
+      // All 3 values appear on the payment record in the Stripe dashboard.
       custom_fields: [
         {
           key: "tenant_name",
@@ -53,8 +53,13 @@ module.exports = async function handler(req, res) {
           type: "text",
         },
         {
-          key: "unit",
-          label: { type: "custom", custom: "Unit / property address" },
+          key: "flat_number",
+          label: { type: "custom", custom: "Flat number" },
+          type: "text",
+        },
+        {
+          key: "property_address",
+          label: { type: "custom", custom: "Property address" },
           type: "text",
         },
       ],
